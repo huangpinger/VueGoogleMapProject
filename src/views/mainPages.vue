@@ -2,21 +2,33 @@
     <div class="main-page-container">
         <div>
             <div>
-                <mapView />
+                <mapView @clickMap="handleSyncList"/>
             </div>
-            <div></div>
+            <div>
+                <markerList :marker-list="markerList" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import mapView from '../components/mapView'
+    import mapView from '../components/mapView';
+    import markerList from '../components/markerList'
     export default {
         data() {
-
+            return {
+                markerList: []
+            }
+        },
+        methods: {
+            handleSyncList(val) {
+                this.markerList = val;
+                console.log('ddd',val)
+            }
         },
         components:{
-            mapView
+            mapView,
+            markerList
         }
     }
 </script>

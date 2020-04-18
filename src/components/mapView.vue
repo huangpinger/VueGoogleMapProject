@@ -9,14 +9,6 @@
                     style="width: 1200px; height: 800px"
                     @click="handleClick"
             >
-                <GmapMarker
-                        :key="index"
-                        v-for="(m, index) in markers"
-                        :position="m.position"
-                        :clickable="true"
-                        :draggable="true"
-                        @click="center=m.position"
-                />
             </GmapMap>
         </div>
     </div>
@@ -39,8 +31,9 @@
             handleClick(e) {
                 this.$refs.mapRef.$mapPromise.then((map) => {
                     map.panTo(e.latLng)
-                    this.markers.push(e.latLng)
-                    console.log(this.markers)
+                    let lat = e.latLng.lat(), lng = e.latLng.lng()
+                    this.markers.push({lat: lat, lng: lng})
+                    this.$emit('clickMap', this.markers);
                 })
             },
         }
@@ -49,7 +42,7 @@
 
 <style scoped lang="scss">
     .map-view-container{
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
         right: 0;
