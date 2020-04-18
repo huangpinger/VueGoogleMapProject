@@ -1,36 +1,48 @@
 <template>
     <div class="map-view-container">
-        <div id="allmap"></div>
+        <div>
+            <GmapMap
+                    ref="mapRef"
+                    :center="centerPostion"
+                    :zoom="7"
+                    map-type-id="terrain"
+                    style="width: 1200px; height: 800px"
+                    @click="handleClick"
+            >
+                <GmapMarker
+                        :key="index"
+                        v-for="(m, index) in markers"
+                        :position="m.position"
+                        :clickable="true"
+                        :draggable="true"
+                        @click="center=m.position"
+                />
+            </GmapMap>
+        </div>
     </div>
 </template>
 
 <script>
-    import google from 'google'
     export default {
         data() {
             return {
                 maps: {},
+                markers:[],
+                centerPostion: {
+                    lat: 30.67, lng: 104.07
+                }
             }
         },
         mounted() {
-            this.initMaps()
         },
         methods: {
-            initMaps() {
-                this.maps = new google.maps.Map(document.getElementById("allmap"), {
-                    zoom: 8,
-                    //设置地图中心点
-                    center: { lng: 107.3951, lat: 34.491 },
-                    //为了关闭默认控件集,设置地图的disableDefaultUI的属性为true
-                    disableDefaultUI: true,
-                    // 启用缩放和平移
-                    gestureHandling: "greedy",
-                    // hybrid包含卫星和地名
-                    mapTypeId: "hybrid",
-                    //语言可选值：en，zh_en, zh_cn
-                    language: "zh_cn"
-                });
-            }
+            handleClick(e) {
+                this.$refs.mapRef.$mapPromise.then((map) => {
+                    map.panTo(e.latLng)
+                    this.markers.push(e.latLng)
+                    console.log(this.markers)
+                })
+            },
         }
     }
 </script>

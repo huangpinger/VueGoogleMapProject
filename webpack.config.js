@@ -42,7 +42,7 @@ module.exports = {
         extensions: ['*', '.js', '.json', '.vue', '.scss'],   //配置可省略的后缀名， 空字符串必须使用*代替否则会打包失败
         modules: ['src', 'node_modules', 'common']
     },
-    externals: {
-        'google': 'google'
-    },
+    // externals: {
+    //     'google': 'google'
+    // },
 }

@@ -24,9 +24,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "google": "^2.1.0",
+    "node-sass": "^4.13.1",
     "vue": "^2.6.11",
-    "vue-google-maps": "^0.1.21",
     "vue2-google-maps": "^0.10.7"
   }
 }
