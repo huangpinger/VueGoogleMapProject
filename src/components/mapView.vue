@@ -9,24 +9,16 @@
                     @click="handleClick"
                     @rightclick="handleRightClick"
             >
-                <div>
-                    <el-button type="primary">ddd</el-button>
-                </div>
-                <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen">
-                    <button type="button"
-                            style="background-color: pink;"
-                    >
-                        Hello!
-                    </button>
-                </gmap-info-window>
             </GmapMap>
+        </div>
+        <div class="change-color-container">
+            <el-button @click="handleChangeBackgroundColor">改变颜色</el-button>
         </div>
     </div>
 </template>
 
 <script>
     import { map, cloneDeep, extend, flatten, compact, get } from 'lodash'
-    import CenterControl from '../lib/DirectionsRenderer';
     export default {
         props: ['geometryList'],
         data() {
@@ -46,6 +38,7 @@
                 },
                 infoWindowPos: null,
                 infoWinOpen: true,
+                cacheMarkers: [],
             }
         },
         watch: {
@@ -89,6 +82,7 @@
                     return
                 }
                 this.markers.push(this.markers[0])
+                this.cacheMarkers = cloneDeep(this.markers);
                 this.$refs.mapRef.$mapPromise.then((map) => {
                     console.log('map', map)
                     let polylineOptions = {
@@ -124,6 +118,15 @@
                 });
                 this.markerList.push(marker);
                 map.setCenter(location);
+            },
+            handleChangeBackgroundColor() {
+                let color = '#D67373';
+                let polylineOptions = {
+                    path: this.cacheMarkers,
+                    fillColor: color,
+                };
+                let polygon = new google.maps.Polygon(polylineOptions);
+                polygon.setMap(this.maps);
             }
         },
     }
@@ -134,6 +137,11 @@
         position: relative;
         .vue-map-container{
             height: 915px;
+        }
+        .change-color-container{
+            position: fixed;
+            top: 20px;
+            left: 200px;
         }
     }
 </style>

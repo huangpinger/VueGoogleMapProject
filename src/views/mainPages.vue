@@ -53,7 +53,7 @@
                 flex-grow: 1;
             }
             & > div:last-child{
-                width: 200px;
+                width: 300px;
                 flex-grow: 0;
                 height: 100%;
                 overflow-y: scroll;

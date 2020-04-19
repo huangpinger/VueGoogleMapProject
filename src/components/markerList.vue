@@ -1,7 +1,6 @@
 <template>
     <div class="marker-list-container">
         <el-upload
-                drag
                 :auto-upload=false
                 action=""
                 accept="shp"
@@ -10,11 +9,10 @@
                 :on-change="handleChange"
                 :on-success="handleFinishUpload"
         >
-            <i class="el-icon-upload"></i>
-
-            <div class="el-upload__tip" slot="tip">必须是shp文件</div>
+            <el-button size="small" type="primary">点击上传</el-button>
+            <span class="el-upload__tip" slot="tip">必须是shp文件</span>
         </el-upload>
-        <el-card shadow="never">
+        <el-card shadow="always" v-show="markerList.length != 0">
             <div v-for="(item, index) in markerList"
                  :key="`${item.lat}${item.lat}${index}`">
                 <label>经度{{item.lng}}</label>
@@ -91,6 +89,9 @@
         right: 0;
         bottom: 0;
         padding: 10px;
+        .el-card{
+            margin: 10px 0;
+        }
         .el-card__body{
             & > div{
                 & > label{
