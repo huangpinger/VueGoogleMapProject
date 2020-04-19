@@ -58,19 +58,6 @@
             this.$refs.mapRef.$mapPromise.then((map) => {
                 this.maps = map
             })
-            var controlDiv = document.createElement('div');
-            var myControl = new CenterControl(controlDiv, this.maps);
-
-            // We don't really need to set an index value here, but
-            // this would be how you do it. Note that we set this
-            // value as a property of the DIV itself.
-            controlDiv.index = 1;
-
-            // Add the control to the map at a designated control position
-            // by pushing it on the position's array. This code will
-            // implicitly add the control to the DOM, through the Map
-            // object. You should not attach the control manually.
-            this.maps.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
         },
         methods: {
             handleDrawPolygon(val) {
