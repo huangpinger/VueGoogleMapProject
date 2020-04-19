@@ -2,10 +2,10 @@
     <div class="main-page-container">
         <div>
             <div>
-                <mapView @clickMap="handleSyncList"/>
+                <mapView @clickMap="handleSyncList" :geometry-list="geometryList"/>
             </div>
             <div>
-                <markerList :marker-list="markerList" />
+                <markerList :marker-list="markerList" @syncParsedList="handleSyncParsedList" />
             </div>
         </div>
     </div>
@@ -17,13 +17,17 @@
     export default {
         data() {
             return {
-                markerList: []
+                markerList: [],
+                geometryList: [],
             }
         },
         methods: {
             handleSyncList(val) {
                 this.markerList = val;
                 console.log('ddd',val)
+            },
+            handleSyncParsedList(val) {
+                this.geometryList = val
             }
         },
         components:{
@@ -44,12 +48,15 @@
         & > div {
             display: flex;
             flex-direction: row;
+            height: 100%;
             & > div:first-child{
                 flex-grow: 1;
             }
             & > div:last-child{
                 width: 200px;
                 flex-grow: 0;
+                height: 100%;
+                overflow-y: scroll;
             }
         }
     }
