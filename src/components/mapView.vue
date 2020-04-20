@@ -6,14 +6,12 @@
                     :center="centerPostion"
                     :zoom="7"
                     map-type-id="roadmap"
-                    @click="handleClick"
-                    @rightclick="handleRightClick"
+                    @click="handleAddMarker"
+                    @rightclick="handleClearMarker"
             >
             </GmapMap>
         </div>
-        <div class="change-color-container">
-            <el-button @click="handleChangeBackgroundColor">改变颜色</el-button>
-        </div>
+        <el-button ref="changeColor" class="change-color" @click="handleChangeBackgroundColor">改变颜色</el-button>
     </div>
 </template>
 
@@ -43,28 +41,28 @@
         },
         watch: {
             geometryList(val){
-                console.log('map',val)
                 this.handleDrawPolygon(val)
             }
         },
         mounted() {
             this.$refs.mapRef.$mapPromise.then((map) => {
                 this.maps = map
+                let centerControlDiv = this.$refs.changeColor.$el;
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
             })
         },
         methods: {
             handleDrawPolygon(val) {
-                console.log('map', this.maps, val);
-                val.map(d => {
-                    let Coords = {}, coordinates = [];
-                    if (d.geometry.type === 'MultiPolygon') {
-                        coordinates = flatten(d.geometry.coordinates);
+                val.map(geometry => {
+                    let coords = {}, coordinates = [];
+                    if (geometry.geometry.type === 'MultiPolygon') {
+                        coordinates = flatten(geometry.geometry.coordinates);
                     }else {
-                        coordinates = d.geometry.coordinates;
+                        coordinates = geometry.geometry.coordinates;
                     }
-                    Coords = coordinates.map(j => {
-                        return compact(j.map(i => {
-                            let obj = {lat: i[1], lng: i[0]}
+                    coords = coordinates.map(coordinate => {
+                        return compact(coordinate.map(position => {
+                            let obj = {lat: position[1], lng: position[0]}
                             if (typeof get(obj, 'lat', '') == "number" && typeof get(obj, 'lng', '') == "number") {
                                 return obj;
                             }else {
@@ -73,18 +71,17 @@
                         }))
                     })
                     this.maps.data.add({
-                        geometry: new google.maps.Data.Polygon(Coords)
+                        geometry: new google.maps.Data.Polygon(coords)
                     });
                 })
             },
-            handleRightClick(e) {
+            handleClearMarker(e) {
                 if (this.markers.length <= 0) {
                     return
                 }
                 this.markers.push(this.markers[0])
                 this.cacheMarkers = cloneDeep(this.markers);
                 this.$refs.mapRef.$mapPromise.then((map) => {
-                    console.log('map', map)
                     let polylineOptions = {
                         path: this.markers,
                         geodesic: true, // 可测量的
@@ -102,7 +99,7 @@
                 });
 
             },
-            handleClick(e) {
+            handleAddMarker(e) {
                 this.$refs.mapRef.$mapPromise.then((map) => {
                     this.placeMarker(map, e.latLng)
                     // map.panTo(e.latLng)
@@ -138,10 +135,8 @@
         .vue-map-container{
             height: 915px;
         }
-        .change-color-container{
-            position: fixed;
-            top: 20px;
-            left: 200px;
+        .change-color{
+            margin-top: 10px;
         }
     }
 </style>

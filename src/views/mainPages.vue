@@ -24,7 +24,6 @@
         methods: {
             handleSyncList(val) {
                 this.markerList = val;
-                console.log('ddd',val)
             },
             handleSyncParsedList(val) {
                 this.geometryList = val

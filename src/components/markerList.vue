@@ -6,7 +6,7 @@
                 accept="shp"
                 :limit="1"
                 :show-file-list="false"
-                :on-change="handleChange"
+                :on-change="handleFileChange"
                 :on-success="handleFinishUpload"
         >
             <el-button size="small" type="primary">点击上传</el-button>
@@ -42,11 +42,9 @@
         },
         methods: {
             handleFinishUpload() {
-                console.log('list#', this.geometryList);
             },
-            handleChange(file) {
+            handleFileChange(file) {
                 this.shpFile=file;
-                console.log('error', this.shpFile, file)
                 const name=this.shpFile.name
                 const extension=name.split('.')[1];
                 let that = this;
@@ -64,7 +62,6 @@
                             .then(source => source.read()
                                 .then(function log(result) {
                                     if (result.done) {
-                                        console.log('list#', that.geometryList)
                                         that.$emit('syncParsedList', that.geometryList);
                                         return
                                     };
