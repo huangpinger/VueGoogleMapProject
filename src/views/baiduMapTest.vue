@@ -1,7 +1,7 @@
 <template>
     <div>
         123
-        <baidu-map :center="center" :zoom="zoom" @ready="handler" class="bm-view" ak="MWDhxBUTiInMbAywtGvSyPUmVUoloT4L">
+        <baidu-map :center="center" :zoom="zoom" @ready="handler" class="bm-view" ak="your key">
         </baidu-map>
     </div>
 </template>

@@ -48,7 +48,8 @@
                     }).extend([this.attribution]),
                     target: 'map',
                     view: new View({
-                        center: [0, 0],
+                        //center: [103.93817, 30.57634],
+                        center: [30.57634, 103.93817],
                         zoom: 2
                     })
                 })
